@@ -16,7 +16,7 @@ Tournament Style
 
 ![inline fit](https://imgs.xkcd.com/comics/random_number.png)
   
-^ Algorthims are fun(?)
+^ Algorithms are fun(?)
 ^ T-Shirts
 
 ---
@@ -34,7 +34,7 @@ Tournament Style
 ![inline fit](wtf.png)
 #WTF?!
 
-^ Google reccomends C++ and Java?
+^ Google recommends C++ and Java?
 ^ What about Swift?
 
 ---
@@ -60,7 +60,7 @@ Tournament Style
 #Choose your starting point
 ![inline fit](xcode.png)![inline fit](main.png)
 
-^ Pretty nice looking XCode screen
+^ Pretty nice looking Xcode screen
 ^ I'll choose the editor on the right
 
 ---
@@ -112,7 +112,7 @@ func makeBatmanMyBestFriend() {
 
 Shortcut to Code
 
-^ Broilerplate
+^ Boilerplate
 ^ No more Boring Parts
 ^ You, a text editor, and an algorithm
 ^ And T-Shirts
@@ -127,7 +127,7 @@ Shortcut to Code
 
 ![fit](timmy.png)
 
-^ Its a great tool to help teach code
+^ It’s a great tool to help teach code
 ^ Good for interviews
 
 ---

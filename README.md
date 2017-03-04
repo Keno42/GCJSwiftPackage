@@ -10,3 +10,7 @@ A simple package that enables you to jump in swift coding for GCJ as fast as pos
 
 4. You will find the result and the source code files in ./Output/input-file-name folder.
 
+# Want to edit code using XCode?
+
+Run `swift package generate-xcodeproj`
+

@@ -1,77 +1,43 @@
 import Foundation
 
-enum GCJReadInputError: Error {
-    case invalidType
+private let decoder = Util.decoder
+
+func readInput() -> Int {
+    return decoder.getRow()
 }
 
-protocol GCJInputComvertible {
-    static func convert(decoder: GCJInputDecoder) throws -> Self
+func readInput() -> [Int] {
+    return decoder.getRow()
 }
 
-func readInputNumber() throws -> Int {
-    return try Util().readInputCount()
+func readInput() -> (Int, Int) {
+    return decoder.getRow()
 }
 
-func readInput<Input: GCJInputComvertible>() throws -> [Input] {
-    return try Util().readInput()
+func readInput() -> String {
+    return decoder.getRow()
 }
 
-class Util {
+private class Util {
     
     static let baseURL: URL = {
         var fileURL = URL(fileURLWithPath: #file)
         fileURL.deleteLastPathComponent()
+        fileURL.deleteLastPathComponent()
         return fileURL
     }()
     
-    let data: [String]
-    init(data: String) {
-        self.data = data.components(separatedBy: "\n")
-    }
-    
-    convenience init() throws {
+    static var decoder: InputFileDecoder {
         var arguments = CommandLine.arguments
         arguments.removeFirst()
         let file = arguments.joined(separator: " ")
         let input = Util.baseURL.appendingPathComponent(file)
-        self.init(data: try String(contentsOf: input))
-    }
-    
-    func readInput<Input: GCJInputComvertible>() throws -> [Input] {
-        let inputCount: Int = try readInputCount()
-        let input: [String] = try readInputData()
-        
-        let decoder = GCJInputDecoder(input: input)
-        
-        var result: [Input] = []
-        for _ in 0..<inputCount {
-            let value = try Input.convert(decoder: decoder)
-            result.append(value)
-        }
-        
-        if result.count < inputCount {
-            throw GCJReadInputError.invalidType
-        }
-
-        return result
-    }
-    
-    func readInputCount() throws -> Int {
-        if let firstLine = data.first,
-            let value = Int(firstLine) {
-            return value
-        }
-        throw GCJReadInputError.invalidType
-    }
-    
-    func readInputData() throws -> [String] {
-        var data = self.data
-        data.removeFirst()
-        return data
+        let data = try! String(contentsOf: input).components(separatedBy: "\n")
+        return InputFileDecoder(input: data)
     }
 }
 
-class GCJInputDecoder {
+private class InputFileDecoder {
     let input: [String]
     var index: Int
     
@@ -80,52 +46,27 @@ class GCJInputDecoder {
         index = self.input.startIndex
     }
     
-    func getRow() throws -> String {
-        guard index < input.endIndex else {
-            throw GCJReadInputError.invalidType
-        }
+    func getRow() -> String {
         let value = input[index]
         index += 1
         return value
     }
     
-    func getRow() throws -> Int {
-        guard let value = Int(try getRow() as String) else {
-            throw GCJReadInputError.invalidType
-        }
-        return value
+    func getRow() -> Int {
+        return Int(getRow() as String)!
     }
     
-    func getRow() throws -> [Int] {
-        let row: String = try getRow()
+    func getRow() -> [Int] {
+        let row: String = getRow()
         let ary = row.components(separatedBy: " ")
-        return try ary.flatMap {
-            if let v = Int($0) {
-                return v
-            }
-            throw GCJReadInputError.invalidType
+        return ary.flatMap {
+            return Int($0)
         }
     }
     
-    func getRow() throws -> (Int, Int) {
-        let row: [Int] = try getRow()
+    func getRow()-> (Int, Int) {
+        let row: [Int] = getRow()
         return (row[0], row[1])
     }
     
-    func getLines(lines count: Int) throws -> [String] {
-        var lines: [String] = []
-        for _ in 0..<count {
-            lines.append(try getRow())
-        }
-        return lines
-    }
-    
-}
-
-extension String: GCJInputComvertible {
-    
-    static func convert(decoder: GCJInputDecoder) throws -> String {
-        return try decoder.getRow()
-    }
-
 }

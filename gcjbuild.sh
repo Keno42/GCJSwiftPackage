@@ -1,0 +1,35 @@
+#!/bin/sh
+
+BASE_INPUT_FOLDER=./Inputs
+BASE_OUTPUT_FOLDER=./Outputs
+BASE_SOURCE_DIRECTORY=./Sources
+
+if [ -z "$(command -v swift)"  ]; then
+    echo "swift is not installed"
+    exit 126
+fi
+
+swift build
+
+CURRENT_INPUT_FILE=`ls -t $BASE_INPUT_FOLDER | head -1`
+
+if [ -z "$CURRENT_INPUT_FILE" ]; then
+    echo "No Files Found in ./Inputs"
+    exit 126
+fi
+
+INPUT_STRING=`cat $BASE_INPUT_FOLDER/$CURRENT_INPUT_FILE`
+OUTPUT_STRING=`.build/debug/GCJSwiftPackage $INPUT_STRING`
+
+INPUT_FILE_NAME=${CURRENT_INPUT_FILE%.*}
+OUTPUT_FILE_DIRECTORY=$BASE_OUTPUT_FOLDER/$INPUT_FILE_NAME
+if [ -d $OUTPUT_FILE_DIRECTORY ]; then
+    rm -r $OUTPUT_FILE_DIRECTORY
+fi
+mkdir $OUTPUT_FILE_DIRECTORY
+
+OUTPUT_FILE=$OUTPUT_FILE_DIRECTORY/$INPUT_FILE_NAME.out
+
+echo $OUTPUT_STRING > $OUTPUT_FILE
+cp $BASE_SOURCE_DIRECTORY/* $OUTPUT_FILE_DIRECTORY/
+zip -r -D $OUTPUT_FILE_DIRECTORY/$INPUT_FILE_NAME.zip $OUTPUT_FILE_DIRECTORY

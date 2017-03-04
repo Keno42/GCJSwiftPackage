@@ -1,72 +1,38 @@
 import Foundation
 
-private let decoder = Util.decoder
+// http://qiita.com/y_mazun/items/dc2a0cad8da1c0e88a40
+extension String: Collection {} // to enable String.split()
 
 func readInput() -> Int {
-    return decoder.getRow()
+    return readLine().flatMap { Int($0) }!
 }
 
 func readInput() -> [Int] {
-    return decoder.getRow()
+    return readLine().flatMap { $0.split(separator: " ").flatMap { Int($0)} }!
 }
 
 func readInput() -> (Int, Int) {
-    return decoder.getRow()
+    let inputs = readInput() as [Int]
+    return (inputs[0], inputs[1])
+}
+
+func readInput() -> Double {
+    return readLine().flatMap { Double($0) }!
+}
+
+func readInput() -> [Double] {
+    return readLine().flatMap { $0.split(separator: " ").flatMap { Double($0)} }!
+}
+
+func readInput() -> (Double, Double) {
+    let inputs = readInput() as [Double]
+    return (inputs[0], inputs[1])
 }
 
 func readInput() -> String {
-    return decoder.getRow()
+    return readLine()!
 }
 
-private class Util {
-    
-    static let baseURL: URL = {
-        var fileURL = URL(fileURLWithPath: #file)
-        fileURL.deleteLastPathComponent()
-        fileURL.deleteLastPathComponent()
-        return fileURL
-    }()
-    
-    static var decoder: InputFileDecoder {
-        var arguments = CommandLine.arguments
-        arguments.removeFirst()
-        let file = arguments.joined(separator: " ")
-        let input = Util.baseURL.appendingPathComponent(file)
-        let data = try! String(contentsOf: input).components(separatedBy: "\n")
-        return InputFileDecoder(input: data)
-    }
-}
-
-private class InputFileDecoder {
-    let input: [String]
-    var index: Int
-    
-    init(input: [String]) {
-        self.input = input
-        index = self.input.startIndex
-    }
-    
-    func getRow() -> String {
-        let value = input[index]
-        index += 1
-        return value
-    }
-    
-    func getRow() -> Int {
-        return Int(getRow() as String)!
-    }
-    
-    func getRow() -> [Int] {
-        let row: String = getRow()
-        let ary = row.components(separatedBy: " ")
-        return ary.flatMap {
-            return Int($0)
-        }
-    }
-    
-    func getRow()-> (Int, Int) {
-        let row: [Int] = getRow()
-        return (row[0], row[1])
-    }
-    
+func readInput() -> [String] {
+    return readLine().flatMap { $0.split(separator: " ") }!
 }
